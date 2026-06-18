@@ -1,5 +1,6 @@
 /* ─── Design Tokens ──────────────────────────────────────────────────── */
 :root {
+  /* Brand palette — never changes between themes */
   --color-navy:        #1a2e5a;
   --color-navy-dark:   #0d1b35;
   --color-navy-mid:    #1a3a6a;
@@ -26,6 +27,107 @@
 
   --max-width:   1100px;
   --section-pad: clamp(40px, 6vw, 80px);
+
+  /* ── Semantic theme tokens (overridden per theme below) ── */
+  --theme-bg:              var(--color-cream);
+  --theme-text:            var(--color-navy);
+  --theme-heading-on-bg:   var(--color-navy);     /* heading on the light/bg surface */
+  --theme-subtext-on-bg:   var(--color-text-dark);
+  --theme-card-on-bg:      var(--color-navy-mid);
+  --theme-border-subtle:   rgba(26, 46, 90, 0.15);
+  --theme-divider:         rgba(26, 46, 90, 0.2);
+  --theme-toggle-icon:     '🌙';
+}
+
+/* ─── Light Theme (explicit, matches :root defaults) ─────────────────── */
+[data-theme="light"] {
+  /* same as :root — declared so JS reads it cleanly */
+  --theme-bg:            var(--color-cream);
+  --theme-text:          var(--color-navy);
+  --theme-heading-on-bg: var(--color-navy);
+  --theme-subtext-on-bg: var(--color-text-dark);
+  --theme-card-on-bg:    var(--color-navy-mid);
+  --theme-border-subtle: rgba(26, 46, 90, 0.15);
+  --theme-divider:       rgba(26, 46, 90, 0.2);
+}
+
+/* ─── Dark Theme ─────────────────────────────────────────────────────── */
+[data-theme="dark"] {
+  /* Flip the "light" surface colours */
+  --theme-bg:            #07111f;
+  --theme-text:          var(--color-text-light);
+  --theme-heading-on-bg: var(--color-gold-bright);
+  --theme-subtext-on-bg: var(--color-text-muted);
+  --theme-card-on-bg:    #0d1e38;
+  --theme-border-subtle: rgba(212, 165, 116, 0.15);
+  --theme-divider:       rgba(212, 165, 116, 0.2);
+
+  /* Override raw colour tokens that feed the CSS classes */
+  --color-cream:     #07111f;
+  --color-text-dark: var(--color-text-light);
+  --color-navy-dark: #04090f;   /* deepen hero/section-dark bg slightly */
+}
+
+/* Dark-mode body and section-level bg */
+[data-theme="dark"] body {
+  background: var(--theme-bg);
+  color: var(--theme-text);
+}
+
+[data-theme="dark"] .section {
+  background: var(--theme-bg);
+}
+
+/* Fixture section divider lines flip from subtle navy to subtle gold */
+[data-theme="dark"] .fixtures-group__divider {
+  border-color: var(--theme-divider);
+}
+
+/* ─── Theme Toggle Button ────────────────────────────────────────────── */
+.theme-toggle {
+  position: fixed;
+  top: 14px;
+  right: 16px;
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px 6px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--color-gold-dark);
+  background: rgba(13, 27, 53, 0.85);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  font-size: 13px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--color-gold-bright);
+  transition: background 0.2s, border-color 0.2s, transform 0.1s;
+  user-select: none;
+}
+
+.theme-toggle:hover {
+  background: rgba(26, 46, 106, 0.95);
+  border-color: var(--color-gold-bright);
+}
+
+.theme-toggle:active {
+  transform: scale(0.96);
+}
+
+.theme-toggle__icon {
+  font-size: 15px;
+  line-height: 1;
+  transition: transform 0.4s ease;
+}
+
+[data-theme="light"] .theme-toggle {
+  background: rgba(26, 46, 90, 0.9);
+}
+
+[data-theme="dark"] .theme-toggle {
+  background: rgba(4, 9, 15, 0.9);
 }
 
 /* ─── Reset ──────────────────────────────────────────────────────────── */

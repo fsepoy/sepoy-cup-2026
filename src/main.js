@@ -4,6 +4,9 @@ import { renderGroups } from './components/groups.js'
 import { renderFixtures } from './components/fixtures.js'
 import { renderBracket } from './components/bracket.js'
 import { renderChampion } from './components/champion.js'
+import { mountThemeToggle } from './components/theme-toggle.js'
+
+mountThemeToggle()
 
 async function init() {
   const loading = document.createElement('div')

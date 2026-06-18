@@ -4,6 +4,9 @@ import { renderPatSection } from './components/admin/pat-section.js'
 import { renderScoresSection } from './components/admin/scores-section.js'
 import { renderDangerSection } from './components/admin/danger-section.js'
 import { showToast } from './components/admin/toast.js'
+import { mountThemeToggle } from './components/theme-toggle.js'
+
+mountThemeToggle()
 
 async function init() {
   document.body.classList.add('admin-body')
