@@ -1,5 +1,6 @@
 import { gsap } from 'gsap'
 import { resolveBracket } from '../lib/knockout.js'
+import { escapeHtml } from '../lib/utils.js'
 
 export function renderBracket(el, data) {
   el.className = 'section section--navy'
@@ -70,8 +71,8 @@ function buildSlot(team, isTbd, score, isWinner, played) {
 
   return `
     <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:${bg};${border}${shadow}transition:all 0.2s;">
-      <span style="font-size:22px;">${isTbd ? '—' : (team?.flag ?? '🏴')}</span>
-      <span style="font-weight:600;color:${color};flex:1;">${isTbd ? 'TBD' : (team?.name ?? '?')}</span>
+      <span style="font-size:22px;">${isTbd ? '—' : escapeHtml(team?.flag ?? '🏴')}</span>
+      <span style="font-weight:600;color:${color};flex:1;">${isTbd ? 'TBD' : escapeHtml(team?.name ?? '?')}</span>
       ${played ? `<span style="font-family:var(--font-display);font-size:24px;color:${isWinner ? 'var(--color-gold-bright)' : 'var(--color-text-muted)'};">${score}</span>` : ''}
     </div>
   `

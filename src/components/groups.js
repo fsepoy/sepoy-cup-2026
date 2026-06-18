@@ -1,5 +1,6 @@
 import { gsap } from 'gsap'
 import { calculateStandings } from '../lib/standings.js'
+import { escapeHtml } from '../lib/utils.js'
 
 export function renderGroups(el, data) {
   el.className = 'section section--dark'
@@ -37,7 +38,7 @@ function buildGroupCard(group, data) {
   return `
     <div class="card" style="background:var(--color-navy-mid);border:2px solid var(--color-gold);border-radius:8px;overflow:hidden;">
       <div class="card__header" style="background:var(--color-navy);padding:12px 16px;border-bottom:2px solid var(--color-gold);">
-        <span style="font-family:var(--font-display);font-size:18px;letter-spacing:2px;color:var(--color-gold-bright);text-transform:uppercase;">Group ${group}</span>
+        <span style="font-family:var(--font-display);font-size:18px;letter-spacing:2px;color:var(--color-gold-bright);text-transform:uppercase;">Group ${escapeHtml(group)}</span>
         ${!played ? `<span style="font-size:11px;color:var(--color-text-muted);margin-left:10px;">No matches played yet</span>` : ''}
       </div>
       <table class="group-table" style="width:100%;border-collapse:collapse;font-size:13px;">
@@ -75,8 +76,8 @@ function buildStandingRow(row, index, team) {
       <td style="padding:10px 10px;color:var(--color-text-muted);font-size:11px;width:20px;border-bottom:1px solid rgba(212,165,116,0.1);">${index + 1}</td>
       <td style="padding:10px 10px;border-bottom:1px solid rgba(212,165,116,0.1);">
         ${advBadge}
-        <span style="font-size:18px;margin-right:8px;">${team?.flag ?? ''}</span>
-        <span style="font-weight:${weight};color:${color};">${team?.name ?? row.teamId}</span>
+        <span style="font-size:18px;margin-right:8px;">${escapeHtml(team?.flag ?? '')}</span>
+        <span style="font-weight:${weight};color:${color};">${escapeHtml(team?.name ?? row.teamId)}</span>
       </td>
       ${cells}
     </tr>

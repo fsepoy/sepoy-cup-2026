@@ -16,8 +16,10 @@ async function init() {
   loading.remove()
 
   if (!ok) {
-    document.getElementById('app').innerHTML =
-      `<div class="loading">Failed to load tournament data: ${error}</div>`
+    const errEl = document.createElement('div')
+    errEl.className = 'loading'
+    errEl.innerHTML = '<span>Failed to load tournament data — check your connection and try again.</span>'
+    document.getElementById('app').appendChild(errEl)
     return
   }
 
