@@ -16,7 +16,7 @@ export function renderFixtures(el, data) {
   let html = `
     <div class="container">
       <div class="section-header">
-        <div class="heading" style="color:var(--theme-heading-on-bg);">Fixtures &amp; Results</div>
+        <div class="heading" style="font-family:var(--font-mono);color:var(--theme-heading-on-bg);">Fixtures &amp; Results</div>
         <div class="divider-star" style="color:var(--color-gold-dark);justify-content:center;max-width:300px;margin:8px auto 0;">★ ★ ★</div>
       </div>
   `

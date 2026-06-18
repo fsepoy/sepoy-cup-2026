@@ -7,7 +7,7 @@ export function renderGroups(el, data) {
   el.innerHTML = `
     <div class="container">
       <div class="section-header">
-        <div class="heading" style="color:var(--color-gold-bright);">Group Standings</div>
+        <div class="heading" style="font-family:var(--font-mono);color:var(--color-gold-bright);">Group Standings</div>
         <div class="divider-star" style="color:var(--color-gold);justify-content:center;max-width:300px;margin:8px auto 0;">★ ★ ★</div>
       </div>
       <div class="standings-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
@@ -59,25 +59,42 @@ function buildGroupCard(group, data) {
 }
 
 function buildStandingRow(row, index, team) {
-  const isAdvance = index < 2
-  const color = isAdvance ? 'var(--color-gold-bright)' : 'var(--color-text-muted)'
-  const weight = isAdvance ? '700' : '400'
+  const hasWon  = row.W > 0
+  const hasLost = row.L > 0 && row.W === 0
+  const hasDraw = row.D > 0 && row.W === 0 && row.L === 0
+  const noGames = row.P === 0
 
-  const cells = [row.P, row.W, row.D, row.L, row.GF, row.GA, row.GD, row.Pts]
-    .map(v => `<td style="padding:10px 6px;text-align:center;color:${color};font-weight:${index === 0 ? '700' : '400'};border-bottom:1px solid rgba(212,165,116,0.1);">${v}</td>`)
-    .join('')
+  // Name / stats colour
+  const nameColor = hasWon  ? 'var(--color-win)'
+                  : hasLost ? '#ff6b6b'
+                  : hasDraw ? 'var(--color-text-light)'
+                  : 'var(--color-text-muted)'
 
-  const advBadge = isAdvance
-    ? `<span style="display:inline-block;width:4px;height:14px;background:var(--color-gold-bright);border-radius:2px;margin-right:6px;vertical-align:middle;"></span>`
+  const statColor = hasWon  ? 'var(--color-win)'
+                  : hasLost ? '#ff6b6b'
+                  : 'var(--color-text-light)'
+
+  // Row background tint for losers
+  const rowBg = hasLost ? 'rgba(180,30,30,0.15)' : 'transparent'
+
+  const advBadge = index < 2
+    ? `<span style="display:inline-block;width:4px;height:14px;background:${hasWon ? 'var(--color-win)' : 'var(--color-gold-bright)'};border-radius:2px;margin-right:6px;vertical-align:middle;"></span>`
     : `<span style="display:inline-block;width:4px;height:14px;margin-right:6px;"></span>`
 
+  const cells = [row.P, row.W, row.D, row.L, row.GF, row.GA, row.GD, row.Pts]
+    .map(v => `<td style="padding:10px 6px;text-align:center;color:${statColor};font-weight:${hasWon ? '700' : '400'};border-bottom:1px solid rgba(212,165,116,0.08);">${v}</td>`)
+    .join('')
+
   return `
-    <tr data-row="${index}" style="transition:background 0.2s;" onmouseover="this.style.background='rgba(26,58,106,0.6)'" onmouseout="this.style.background='transparent'">
-      <td style="padding:10px 10px;color:var(--color-text-muted);font-size:11px;width:20px;border-bottom:1px solid rgba(212,165,116,0.1);">${index + 1}</td>
-      <td style="padding:10px 10px;border-bottom:1px solid rgba(212,165,116,0.1);">
+    <tr data-row="${index}"
+        style="background:${rowBg};transition:background 0.2s;"
+        onmouseover="this.style.background='rgba(26,58,106,0.55)'"
+        onmouseout="this.style.background='${rowBg}'">
+      <td style="padding:10px 10px;color:var(--color-text-muted);font-size:11px;width:20px;border-bottom:1px solid rgba(212,165,116,0.08);">${index + 1}</td>
+      <td style="padding:10px 10px;border-bottom:1px solid rgba(212,165,116,0.08);">
         ${advBadge}
         <span style="margin-right:8px;">${flagIcon(row.teamId, team?.flag)}</span>
-        <span style="font-weight:${weight};color:${color};">${escapeHtml(team?.name ?? row.teamId)}</span>
+        <span style="font-weight:${hasWon ? '700' : '400'};color:${nameColor};">${escapeHtml(team?.name ?? row.teamId)}</span>
       </td>
       ${cells}
     </tr>

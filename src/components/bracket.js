@@ -10,7 +10,7 @@ export function renderBracket(el, data) {
   el.innerHTML = `
     <div class="container">
       <div class="section-header">
-        <div class="heading" style="color:var(--color-gold-bright);">Knockout Bracket</div>
+        <div class="heading" style="font-family:var(--font-mono);color:var(--color-gold-bright);">Knockout Bracket</div>
         <div class="divider-star" style="color:var(--color-gold);justify-content:center;max-width:300px;margin:8px auto 0;">★ ★ ★</div>
       </div>
       <div class="bracket-wrapper" style="overflow-x:auto;padding-bottom:24px;">
