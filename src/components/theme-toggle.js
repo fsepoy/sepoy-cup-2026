@@ -20,7 +20,16 @@ export function mountThemeToggle() {
 
   btn.appendChild(icon)
   btn.appendChild(label)
-  document.body.appendChild(btn)
+
+  // Shared top-right action bar — created once, reused by other mounts (e.g. rules modal)
+  let bar = document.getElementById('top-actions')
+  if (!bar) {
+    bar = document.createElement('div')
+    bar.id = 'top-actions'
+    bar.className = 'top-actions'
+    document.body.appendChild(bar)
+  }
+  bar.appendChild(btn)
 
   function sync() {
     const isDark = getTheme() === 'dark'

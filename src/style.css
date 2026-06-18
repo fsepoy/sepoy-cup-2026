@@ -96,12 +96,18 @@
   border-color: var(--theme-divider);
 }
 
-/* ─── Theme Toggle Button ────────────────────────────────────────────── */
-.theme-toggle {
+/* ─── Top-right action bar (Rules + Theme toggle) ───────────────────── */
+.top-actions {
   position: fixed;
   top: 14px;
   right: 16px;
   z-index: 9000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.theme-toggle {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -141,6 +147,237 @@
 
 [data-theme="dark"] .theme-toggle {
   background: rgba(4, 9, 15, 0.9);
+}
+
+/* ─── Rules Button ───────────────────────────────────────────────────── */
+.rules-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--color-gold-dark);
+  background: rgba(13, 27, 53, 0.85);
+  backdrop-filter: blur(8px);
+  color: var(--color-gold);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
+  white-space: nowrap;
+}
+.rules-btn:hover  { background: rgba(26, 46, 90, 0.95); border-color: var(--color-gold); }
+.rules-btn:active { transform: scale(0.96); }
+
+[data-theme="light"] .rules-btn { background: rgba(26, 46, 90, 0.9); }
+[data-theme="dark"]  .rules-btn { background: rgba(4, 9, 15, 0.9); }
+
+/* ─── Rules Modal ────────────────────────────────────────────────────── */
+.rules-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(4, 9, 15, 0.82);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px 16px 40px;
+  overflow-y: auto;
+}
+
+.rules-modal {
+  position: relative;
+  background: var(--color-navy-dark);
+  border: 2px solid var(--color-gold-dark);
+  border-radius: 12px;
+  max-width: 780px;
+  width: 100%;
+  color: var(--color-text-light);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.7);
+  margin: auto;
+}
+
+.rules-modal__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--color-gold-dark);
+  background: transparent;
+  color: var(--color-gold);
+  font-size: 20px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.rules-modal__close:hover { background: rgba(212, 165, 116, 0.15); }
+
+.rules-modal__header {
+  padding: 32px 40px 24px;
+  border-bottom: 2px solid var(--color-gold-dark);
+  text-align: center;
+}
+.rules-modal__title {
+  font-family: var(--font-display);
+  font-size: 36px;
+  letter-spacing: 3px;
+  color: var(--color-gold-bright);
+  text-transform: uppercase;
+}
+.rules-modal__subtitle {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  letter-spacing: 1px;
+  margin-top: 6px;
+}
+
+.rules-modal__body {
+  padding: 28px 32px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.rules-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+@media (max-width: 560px) { .rules-cols { grid-template-columns: 1fr; } }
+
+.rules-section {
+  background: rgba(26, 58, 106, 0.3);
+  border: 1px solid rgba(212, 165, 116, 0.2);
+  border-radius: 8px;
+  padding: 18px 20px;
+}
+.rules-section--spirit {
+  background: rgba(212, 165, 116, 0.06);
+  border-color: rgba(212, 165, 116, 0.3);
+}
+
+.rules-section__heading {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--color-gold-bright);
+  margin-bottom: 14px;
+}
+
+.rules-flow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.rules-flow__step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  min-width: 80px;
+}
+.rules-flow__icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--color-navy);
+  border: 2px solid var(--color-gold-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-gold-bright);
+}
+.rules-flow__label {
+  font-size: 11px;
+  color: var(--color-text-light);
+  letter-spacing: 0.5px;
+}
+.rules-flow__label span { color: var(--color-text-muted); }
+.rules-flow__arrow { color: var(--color-gold); font-size: 18px; }
+
+.rules-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.rules-table th {
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  padding: 4px 8px;
+  text-align: left;
+  border-bottom: 1px solid rgba(212, 165, 116, 0.2);
+}
+.rules-table td {
+  padding: 7px 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  color: var(--color-text-light);
+}
+.rules-table--compact td, .rules-table--compact th { padding: 5px 8px; }
+.rules-table__val { font-weight: 700; color: var(--color-gold-bright); text-align: right; }
+
+.rules-list {
+  padding-left: 18px;
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--color-text-light);
+}
+.rules-list em { color: var(--color-text-muted); }
+
+.rules-note {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+.rules-badge {
+  display: inline-block;
+  background: var(--color-navy);
+  border: 1px solid var(--color-gold-dark);
+  color: var(--color-gold);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.rules-step-pill {
+  background: var(--color-navy);
+  border: 1px solid var(--color-gold-dark);
+  color: var(--color-gold-bright);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 6px;
+  text-align: center;
+  line-height: 1.4;
+}
+.rules-step-pill small { color: var(--color-text-muted); font-weight: 400; }
+
+.rules-spirit {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  font-size: 13px;
+  color: var(--color-text-light);
+  font-style: italic;
+  line-height: 1.6;
 }
 
 /* ─── Reset ──────────────────────────────────────────────────────────── */
