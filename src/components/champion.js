@@ -1,5 +1,6 @@
 import { gsap } from 'gsap'
 import { renderCertificate } from './certificate.js'
+import { flagIcon } from '../lib/utils.js'
 
 export function renderChampion(el, data) {
   if (!data.champion) return
@@ -11,7 +12,7 @@ export function renderChampion(el, data) {
 
   el.innerHTML = `
     <div class="container">
-      <div class="champion-flag" style="font-size:80px;margin-bottom:16px;">${team?.flag ?? '🏆'}</div>
+      <div class="champion-flag" style="margin-bottom:16px;">${flagIcon(data.champion, team?.flag, 'xl')}</div>
       <div class="display" style="font-family:var(--font-display);font-size:clamp(40px,8vw,72px);color:var(--color-gold-bright);letter-spacing:3px;text-transform:uppercase;line-height:1;">
         ${team?.name ?? data.champion}
       </div>

@@ -1,5 +1,5 @@
 import { gsap } from 'gsap'
-import { escapeHtml } from '../lib/utils.js'
+import { escapeHtml, flagIcon } from '../lib/utils.js'
 
 const STAGE_SECTIONS = [
   { stage: 'group', group: 'A', label: 'Group A' },
@@ -69,12 +69,12 @@ function buildMatchCard(fx, data) {
   return `
     <div class="match-card" style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--color-navy-mid);border-radius:4px;margin-bottom:8px;border-left:3px solid ${borderColor};opacity:${isTbd ? '0.5' : '1'};">
       <div style="display:flex;align-items:center;gap:8px;flex:1;font-weight:600;color:var(--color-text-light);">
-        <span style="font-size:20px;">${escapeHtml(homeTeam.flag)}</span>
+        ${flagIcon(fx.home, homeTeam.flag)}
         <span>${escapeHtml(homeTeam.name)}</span>
       </div>
       ${scoreHtml}
       <div style="display:flex;align-items:center;gap:8px;flex:1;font-weight:600;color:var(--color-text-light);flex-direction:row-reverse;">
-        <span style="font-size:20px;">${escapeHtml(awayTeam.flag)}</span>
+        ${flagIcon(fx.away, awayTeam.flag)}
         <span>${escapeHtml(awayTeam.name)}</span>
       </div>
       <div style="min-width:70px;text-align:right;">${badge}</div>

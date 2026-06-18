@@ -1,3 +1,16 @@
+/* ─── Flag icon sizing ────────────────────────────────────────────────── */
+.fi {
+  display: inline-block;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 2px;
+}
+.fi--sm  { width: 20px; height: 15px; }
+.fi--md  { width: 28px; height: 21px; }
+.fi--lg  { width: 48px; height: 36px; }
+.fi--xl  { width: 80px; height: 60px; }
+
 /* ─── Design Tokens ──────────────────────────────────────────────────── */
 :root {
   /* Brand palette — never changes between themes */

@@ -1,6 +1,6 @@
 import { gsap } from 'gsap'
 import { resolveBracket } from '../lib/knockout.js'
-import { escapeHtml } from '../lib/utils.js'
+import { escapeHtml, flagIcon } from '../lib/utils.js'
 
 export function renderBracket(el, data) {
   el.className = 'section section--navy'
@@ -56,14 +56,14 @@ function buildMatchBlock(label, match, data) {
 
   return `
     <div class="bracket-match" style="background:var(--color-navy-dark);border:2px solid var(--color-gold-dark);border-radius:8px;overflow:hidden;max-width:420px;">
-      ${buildSlot(homeTeam, homeTbd, match.homeScore, homeWin, played)}
+      ${buildSlot(match.home, homeTeam, homeTbd, match.homeScore, homeWin, played)}
       <div style="height:1px;background:var(--color-gold-dark);opacity:0.4;"></div>
-      ${buildSlot(awayTeam, awayTbd, match.awayScore, awayWin, played)}
+      ${buildSlot(match.away, awayTeam, awayTbd, match.awayScore, awayWin, played)}
     </div>
   `
 }
 
-function buildSlot(team, isTbd, score, isWinner, played) {
+function buildSlot(teamId, team, isTbd, score, isWinner, played) {
   const bg      = isWinner ? 'var(--color-navy)' : 'transparent'
   const color   = isTbd ? 'var(--color-text-muted)' : isWinner ? 'var(--color-gold-bright)' : 'var(--color-text-light)'
   const border  = isWinner ? 'border-left:3px solid var(--color-gold-bright);' : 'border-left:3px solid transparent;'
@@ -71,7 +71,7 @@ function buildSlot(team, isTbd, score, isWinner, played) {
 
   return `
     <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:${bg};${border}${shadow}transition:all 0.2s;">
-      <span style="font-size:22px;">${isTbd ? '—' : escapeHtml(team?.flag ?? '🏴')}</span>
+      <span>${isTbd ? '<span style="color:var(--color-text-muted)">—</span>' : flagIcon(teamId, team?.flag)}</span>
       <span style="font-weight:600;color:${color};flex:1;">${isTbd ? 'TBD' : escapeHtml(team?.name ?? '?')}</span>
       ${played ? `<span style="font-family:var(--font-display);font-size:24px;color:${isWinner ? 'var(--color-gold-bright)' : 'var(--color-text-muted)'};">${score}</span>` : ''}
     </div>

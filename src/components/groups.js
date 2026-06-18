@@ -1,6 +1,6 @@
 import { gsap } from 'gsap'
 import { calculateStandings } from '../lib/standings.js'
-import { escapeHtml } from '../lib/utils.js'
+import { escapeHtml, flagIcon } from '../lib/utils.js'
 
 export function renderGroups(el, data) {
   el.className = 'section section--dark'
@@ -76,7 +76,7 @@ function buildStandingRow(row, index, team) {
       <td style="padding:10px 10px;color:var(--color-text-muted);font-size:11px;width:20px;border-bottom:1px solid rgba(212,165,116,0.1);">${index + 1}</td>
       <td style="padding:10px 10px;border-bottom:1px solid rgba(212,165,116,0.1);">
         ${advBadge}
-        <span style="font-size:18px;margin-right:8px;">${escapeHtml(team?.flag ?? '')}</span>
+        <span style="margin-right:8px;">${flagIcon(row.teamId, team?.flag)}</span>
         <span style="font-weight:${weight};color:${color};">${escapeHtml(team?.name ?? row.teamId)}</span>
       </td>
       ${cells}
