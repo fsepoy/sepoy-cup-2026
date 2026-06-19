@@ -269,7 +269,7 @@
 }
 
 .rules-section__heading {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 700;
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -305,7 +305,7 @@
   color: var(--color-gold-bright);
 }
 .rules-flow__label {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--color-text-light);
   letter-spacing: 0.5px;
 }
@@ -315,10 +315,10 @@
 .rules-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: 15px;
 }
 .rules-table th {
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--color-gold);
@@ -336,14 +336,14 @@
 
 .rules-list {
   padding-left: 18px;
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.8;
   color: var(--color-text-light);
 }
 .rules-list em { color: var(--color-text-muted); }
 
 .rules-note {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--color-text-muted);
   line-height: 1.6;
 }
@@ -365,7 +365,7 @@
   background: var(--color-navy);
   border: 1px solid var(--color-gold-dark);
   color: var(--color-gold-bright);
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 700;
   padding: 8px 16px;
   border-radius: 6px;
@@ -375,6 +375,7 @@
 .rules-step-pill small { color: var(--color-text-muted); font-weight: 400; }
 
 .rules-spirit {
+  font-size: 15px;
   display: flex;
   align-items: flex-start;
   gap: 14px;

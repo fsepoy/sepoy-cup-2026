@@ -21,10 +21,10 @@ export function renderHero(el, data) {
         style="position:absolute;bottom:0;right:clamp(2%,8vw,12%);height:92%;max-height:660px;object-fit:contain;pointer-events:none;z-index:0;filter:drop-shadow(0 0 40px rgba(212,165,116,0.35)) drop-shadow(0 20px 60px rgba(0,0,0,0.6));"
       />
 
-      <!-- Foreground content — left-aligned on wide screens, centred on mobile -->
-      <div class="hero__content" style="position:relative;z-index:1;text-align:left;padding:clamp(80px,12vw,120px) clamp(24px,8vw,100px);max-width:640px;">
+      <!-- Foreground content — centred -->
+      <div class="hero__content" style="position:relative;z-index:1;text-align:center;padding:clamp(80px,12vw,120px) clamp(24px,8vw,100px);max-width:600px;">
         <div class="hero__title" style="font-family:var(--font-hero);font-weight:700;font-size:clamp(56px,9vw,100px);letter-spacing:2px;color:var(--color-gold-bright);text-transform:uppercase;line-height:0.95;">
-          Sepoy<br>Cup 2026
+          Sepoy Cup<br>2026
         </div>
         <div class="hero__subtitle" style="font-family:var(--font-hero);font-weight:600;font-size:clamp(16px,2.4vw,22px);letter-spacing:5px;color:var(--color-gold);text-transform:uppercase;margin-top:18px;">
           FC24 · Family Cup
