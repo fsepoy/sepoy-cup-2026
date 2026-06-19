@@ -51,7 +51,7 @@ function groupFixtures(fixtures) {
 
 function buildFixtureGroup(label, fixtures, data) {
   const wrap = document.createElement('div')
-  wrap.style.cssText = 'margin-bottom:32px;'
+  wrap.style.cssText = 'margin-bottom:16px;background:var(--color-navy-mid);border-radius:8px;padding:12px 20px;'
 
   const heading = document.createElement('h3')
   heading.style.cssText =
@@ -66,11 +66,11 @@ function buildFixtureGroup(label, fixtures, data) {
 }
 
 function resultColor(myScore, oppScore) {
-  if (myScore === null || oppScore === null) return 'var(--theme-text)'
+  if (myScore === null || oppScore === null) return 'var(--color-text-light)'
   const m = Number(myScore), o = Number(oppScore)
   if (m > o) return 'var(--color-win)'
   if (m < o) return '#ff6b6b'
-  return 'var(--theme-text)'
+  return 'var(--color-text-light)'
 }
 
 function buildFixtureRow(fx, data) {

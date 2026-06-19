@@ -11,7 +11,7 @@ mountThemeToggle()
 async function init() {
   document.body.classList.add('admin-body')
   document.querySelector('#admin-app').style.cssText =
-    'max-width:var(--max-width);margin:0 auto;padding:32px clamp(16px,4vw,40px);min-height:100vh;'
+    'max-width:var(--max-width);margin:0 auto;padding:32px clamp(16px,4vw,40px);min-height:100vh;background:var(--color-cream);'
 
   renderAdminHeader(document.getElementById('admin-header'))
   renderPatSection(document.getElementById('pat-section'))
