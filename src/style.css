@@ -55,6 +55,14 @@
   --theme-border-subtle:   rgba(26, 46, 90, 0.15);
   --theme-divider:         rgba(26, 46, 90, 0.2);
   --theme-toggle-icon:     '🌙';
+
+  /* Admin danger zone — light mode (warm yellow warning) */
+  --admin-warn-bg:         #fffde7;
+  --admin-warn-border:     rgba(180, 83, 9, 0.4);
+  --admin-warn-title:      #9b1c1c;
+  --admin-warn-desc:       var(--color-text-dark);
+  --admin-warn-btn:        #9b1c1c;
+  --admin-warn-btn-border: #9b1c1c;
 }
 
 /* ─── Light Theme (explicit, matches :root defaults) ─────────────────── */
@@ -84,6 +92,14 @@
   --color-cream:     #07111f;
   --color-text-dark: var(--color-text-light);
   --color-navy-dark: #04090f;   /* deepen hero/section-dark bg slightly */
+
+  /* Admin danger zone — dark mode (deep amber warning) */
+  --admin-warn-bg:         #150d00;
+  --admin-warn-border:     rgba(180, 83, 9, 0.35);
+  --admin-warn-title:      #f87171;
+  --admin-warn-desc:       var(--color-text-muted);
+  --admin-warn-btn:        #f87171;
+  --admin-warn-btn-border: rgba(248, 113, 113, 0.5);
 }
 
 /* Dark-mode body and section-level bg */

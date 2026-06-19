@@ -5,20 +5,20 @@ import { showToast } from './toast.js'
 export function renderDangerSection(el, data) {
   el.innerHTML = ''
   el.style.cssText =
-    'border:2px solid rgba(138,42,42,0.5);border-radius:8px;padding:20px;margin-top:48px;'
+    'background:var(--admin-warn-bg);border:2px solid var(--admin-warn-border);border-radius:8px;padding:20px;margin-top:48px;'
 
   const title = document.createElement('h2')
   title.style.cssText =
-    'font-family:var(--font-display);font-size:18px;letter-spacing:1px;color:#d47070;text-transform:uppercase;margin-bottom:8px;'
+    'font-family:var(--font-display);font-size:18px;letter-spacing:1px;color:var(--admin-warn-title);text-transform:uppercase;margin-bottom:8px;'
   title.textContent = 'Danger Zone'
 
   const desc = document.createElement('p')
-  desc.style.cssText = 'font-size:13px;color:var(--color-text-muted);margin-bottom:16px;'
+  desc.style.cssText = 'font-size:13px;color:var(--admin-warn-desc);margin-bottom:16px;'
   desc.textContent = 'These actions modify tournament data and cannot be undone without a manual GitHub edit.'
 
   const clearBtn = document.createElement('button')
   clearBtn.style.cssText =
-    'background:transparent;border:2px solid var(--color-danger);color:#d47070;padding:10px 18px;border-radius:4px;font-weight:700;font-size:12px;letter-spacing:1px;cursor:pointer;text-transform:uppercase;'
+    'background:transparent;border:2px solid var(--admin-warn-btn-border);color:var(--admin-warn-btn);padding:10px 18px;border-radius:4px;font-weight:700;font-size:12px;letter-spacing:1px;cursor:pointer;text-transform:uppercase;'
   clearBtn.textContent = 'Clear All Scores'
   clearBtn.addEventListener('click', async () => {
     if (!confirm('This will clear every match score and reset the bracket. Are you sure?')) return

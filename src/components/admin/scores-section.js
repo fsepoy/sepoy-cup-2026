@@ -18,7 +18,7 @@ export function renderScoresSection(el, data) {
 
   const title = document.createElement('h2')
   title.style.cssText =
-    'font-family:var(--font-display);font-size:24px;letter-spacing:1.5px;color:var(--color-gold-bright);text-transform:uppercase;margin-bottom:24px;'
+    'font-family:var(--font-display);font-size:24px;letter-spacing:1.5px;color:var(--theme-heading-on-bg);text-transform:uppercase;margin-bottom:24px;'
   title.textContent = 'Match Scores'
   el.appendChild(title)
 

@@ -1,6 +1,9 @@
 export function renderAdminHeader(el) {
   el.innerHTML = ''
-  el.style.cssText = 'border-bottom:2px solid var(--color-gold);padding-bottom:20px;margin-bottom:32px;'
+  el.style.cssText = 'background:var(--color-navy-dark);border-bottom:2px solid var(--color-gold);'
+
+  const inner = document.createElement('div')
+  inner.style.cssText = 'max-width:var(--max-width);margin:0 auto;padding:28px clamp(16px,4vw,40px) 24px;'
 
   const title = document.createElement('h1')
   title.style.cssText = 'font-family:var(--font-display);font-size:32px;letter-spacing:2px;color:var(--color-gold-bright);text-transform:uppercase;'
@@ -15,7 +18,8 @@ export function renderAdminHeader(el) {
   viewLink.style.cssText = 'color:var(--color-gold);font-size:12px;text-decoration:none;display:inline-block;margin-top:8px;letter-spacing:1px;'
   viewLink.textContent = '← View public site'
 
-  el.appendChild(title)
-  el.appendChild(sub)
-  el.appendChild(viewLink)
+  inner.appendChild(title)
+  inner.appendChild(sub)
+  inner.appendChild(viewLink)
+  el.appendChild(inner)
 }
