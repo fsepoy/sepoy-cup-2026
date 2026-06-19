@@ -65,10 +65,21 @@ function buildFixtureGroup(label, fixtures, data) {
   return wrap
 }
 
+function resultColor(myScore, oppScore) {
+  if (myScore === null || oppScore === null) return 'var(--theme-text)'
+  const m = Number(myScore), o = Number(oppScore)
+  if (m > o) return 'var(--color-win)'
+  if (m < o) return '#ff6b6b'
+  return 'var(--theme-text)'
+}
+
 function buildFixtureRow(fx, data) {
   const isTbd = fx.home === 'TBD' || fx.away === 'TBD'
   const homeTeam = data.teams[fx.home] ?? { name: 'TBD', flag: '—', short: 'TBD' }
   const awayTeam = data.teams[fx.away] ?? { name: 'TBD', flag: '—', short: 'TBD' }
+
+  const homeColor = resultColor(fx.homeScore, fx.awayScore)
+  const awayColor = resultColor(fx.awayScore, fx.homeScore)
 
   const row = document.createElement('div')
   row.style.cssText =
@@ -76,7 +87,7 @@ function buildFixtureRow(fx, data) {
 
   // Home team
   const homeCell = document.createElement('div')
-  homeCell.style.cssText = 'display:flex;align-items:center;gap:10px;font-family:var(--font-sans);font-size:16px;font-weight:600;color:var(--color-text-light);'
+  homeCell.style.cssText = `display:flex;align-items:center;gap:10px;font-family:var(--font-sans);font-size:16px;font-weight:600;color:${homeColor};`
   homeCell.innerHTML = `${flagIcon(fx.home, homeTeam.flag)}<span>${escapeText(homeTeam.name)}</span>`
 
   // Score inputs
@@ -88,7 +99,7 @@ function buildFixtureRow(fx, data) {
 
   // Away team
   const awayCell = document.createElement('div')
-  awayCell.style.cssText = 'display:flex;align-items:center;gap:10px;font-family:var(--font-sans);font-size:16px;font-weight:600;color:var(--color-text-light);flex-direction:row-reverse;'
+  awayCell.style.cssText = `display:flex;align-items:center;gap:10px;font-family:var(--font-sans);font-size:16px;font-weight:600;color:${awayColor};flex-direction:row-reverse;`
   awayCell.innerHTML = `${flagIcon(fx.away, awayTeam.flag)}<span>${escapeText(awayTeam.name)}</span>`
 
   // Save button
