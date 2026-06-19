@@ -38,15 +38,17 @@
 
 ### 🌟 Light Theme
 
-| Hero | Standings |
-|---|---|
-| ![Hero Light](docs/screenshots/hero-dark.png) | ![Standings Light](docs/screenshots/standings-dark.png) |
+![Public Site — Light](docs/screenshots/full-page-light.png)
 
 ### 🌙 Dark Theme
 
-| Hero | Fixtures |
+![Public Site — Dark](docs/screenshots/full-page-dark.png)
+
+### 🔐 Admin Panel
+
+| Light | Dark |
 |---|---|
-| ![Hero Dark](docs/screenshots/hero-light.png) | ![Fixtures Dark](docs/screenshots/fixtures-light.png) |
+| ![Admin Light](docs/screenshots/full-page-light-admin.png) | ![Admin Dark](docs/screenshots/full-page-dark-admin.png) |
 
 </div>
 
