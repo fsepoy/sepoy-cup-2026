@@ -41,7 +41,7 @@ function buildGroupCard(group, data) {
         <span style="font-family:var(--font-display);font-size:18px;letter-spacing:2px;color:var(--color-gold-bright);text-transform:uppercase;">Group ${escapeHtml(group)}</span>
         ${!played ? `<span style="font-size:11px;color:var(--color-text-muted);margin-left:10px;">No matches played yet</span>` : ''}
       </div>
-      <table class="group-table" style="width:100%;border-collapse:collapse;font-size:13px;">
+      <table class="group-table" style="width:100%;border-collapse:collapse;font-size:15px;">
         <thead>
           <tr>
             <th style="background:var(--color-navy);color:var(--color-gold);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:8px 10px;text-align:left;border-bottom:2px solid var(--color-gold);" colspan="2">Team</th>
@@ -94,7 +94,7 @@ function buildStandingRow(row, index, team) {
       <td style="padding:10px 10px;border-bottom:1px solid rgba(212,165,116,0.08);">
         ${advBadge}
         <span style="margin-right:8px;">${flagIcon(row.teamId, team?.flag)}</span>
-        <span style="font-weight:${hasWon ? '700' : '400'};color:${nameColor};">${escapeHtml(team?.name ?? row.teamId)}</span>
+        <span style="font-family:var(--font-sans);font-size:15px;font-weight:${hasWon ? '700' : '600'};color:${nameColor};">${escapeHtml(team?.name ?? row.teamId)}</span>
       </td>
       ${cells}
     </tr>

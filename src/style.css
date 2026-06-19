@@ -32,6 +32,7 @@
   --font-hero:     'Chakra Petch', 'Bebas Neue', sans-serif;
   --font-body:     'Inter', system-ui, sans-serif;
   --font-mono:     'Roboto Mono', monospace;
+  --font-sans:     'Open Sans', 'Inter', sans-serif;
   --color-win:     #39ff7a;
   --color-loss-bg: rgba(180, 30, 30, 0.18);
 

@@ -49,16 +49,27 @@ export function renderFixtures(el, data) {
   el.querySelectorAll('.fixtures-group').forEach(g => observer.observe(g))
 }
 
+function resultColor(myScore, oppScore, played) {
+  if (!played) return 'var(--color-text-light)'
+  const m = Number(myScore), o = Number(oppScore)
+  if (m > o) return 'var(--color-win)'
+  if (m < o) return '#ff6b6b'
+  return 'var(--color-text-light)'
+}
+
 function buildMatchCard(fx, data) {
   const isTbd    = fx.home === 'TBD' || fx.away === 'TBD'
   const played   = fx.homeScore !== null && fx.awayScore !== null
   const homeTeam = data.teams[fx.home] ?? { name: 'TBD', flag: '—', short: 'TBD' }
   const awayTeam = data.teams[fx.away] ?? { name: 'TBD', flag: '—', short: 'TBD' }
 
+  const homeColor = resultColor(fx.homeScore, fx.awayScore, played)
+  const awayColor = resultColor(fx.awayScore, fx.homeScore, played)
+
   const borderColor = played ? 'var(--color-gold)' : isTbd ? 'transparent' : 'var(--color-navy)'
   const scoreHtml   = played
     ? `<span style="font-family:var(--font-display);font-size:28px;color:var(--color-gold-bright);min-width:80px;text-align:center;letter-spacing:2px;">${fx.homeScore} – ${fx.awayScore}</span>`
-    : `<span style="font-size:14px;color:var(--color-text-muted);font-weight:600;min-width:80px;text-align:center;">vs</span>`
+    : `<span style="font-size:16px;color:var(--color-text-muted);font-weight:600;min-width:80px;text-align:center;">vs</span>`
 
   const badge = played
     ? `<span style="background:var(--color-navy);color:var(--color-gold);border:1px solid var(--color-gold-dark);padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;">Played</span>`
@@ -67,13 +78,13 @@ function buildMatchCard(fx, data) {
       : `<span style="color:var(--color-text-muted);font-size:10px;letter-spacing:1px;text-transform:uppercase;">Upcoming</span>`
 
   return `
-    <div class="match-card" style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--color-navy-mid);border-radius:4px;margin-bottom:8px;border-left:3px solid ${borderColor};opacity:${isTbd ? '0.5' : '1'};">
-      <div style="display:flex;align-items:center;gap:8px;flex:1;font-weight:600;color:var(--color-text-light);">
+    <div class="match-card" style="display:flex;align-items:center;gap:12px;padding:14px 18px;background:var(--color-navy-mid);border-radius:4px;margin-bottom:12px;border-left:3px solid ${borderColor};opacity:${isTbd ? '0.5' : '1'};">
+      <div style="display:flex;align-items:center;gap:10px;flex:1;font-family:var(--font-sans);font-size:16px;font-weight:600;color:${homeColor};">
         ${flagIcon(fx.home, homeTeam.flag)}
         <span>${escapeHtml(homeTeam.name)}</span>
       </div>
       ${scoreHtml}
-      <div style="display:flex;align-items:center;gap:8px;flex:1;font-weight:600;color:var(--color-text-light);flex-direction:row-reverse;">
+      <div style="display:flex;align-items:center;gap:10px;flex:1;font-family:var(--font-sans);font-size:16px;font-weight:600;color:${awayColor};flex-direction:row-reverse;">
         ${flagIcon(fx.away, awayTeam.flag)}
         <span>${escapeHtml(awayTeam.name)}</span>
       </div>

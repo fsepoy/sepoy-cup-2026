@@ -1,6 +1,7 @@
 import { getPat } from './pat-section.js'
 import { getFileMeta, writeData } from '../../lib/github.js'
 import { showToast } from './toast.js'
+import { flagIcon } from '../../lib/utils.js'
 
 const STAGE_LABELS = {
   group: null,           // labelled by group letter
@@ -75,8 +76,8 @@ function buildFixtureRow(fx, data) {
 
   // Home team
   const homeCell = document.createElement('div')
-  homeCell.style.cssText = 'display:flex;align-items:center;gap:8px;font-weight:600;color:var(--color-text-light);'
-  homeCell.innerHTML = `<span style="font-size:20px">${escapeText(homeTeam.flag)}</span><span>${escapeText(homeTeam.name)}</span>`
+  homeCell.style.cssText = 'display:flex;align-items:center;gap:10px;font-family:var(--font-sans);font-size:16px;font-weight:600;color:var(--color-text-light);'
+  homeCell.innerHTML = `${flagIcon(fx.home, homeTeam.flag)}<span>${escapeText(homeTeam.name)}</span>`
 
   // Score inputs
   const homeScore = scoreInput(fx.homeScore, isTbd)
@@ -87,8 +88,8 @@ function buildFixtureRow(fx, data) {
 
   // Away team
   const awayCell = document.createElement('div')
-  awayCell.style.cssText = 'display:flex;align-items:center;gap:8px;font-weight:600;color:var(--color-text-light);flex-direction:row-reverse;'
-  awayCell.innerHTML = `<span style="font-size:20px">${escapeText(awayTeam.flag)}</span><span>${escapeText(awayTeam.name)}</span>`
+  awayCell.style.cssText = 'display:flex;align-items:center;gap:10px;font-family:var(--font-sans);font-size:16px;font-weight:600;color:var(--color-text-light);flex-direction:row-reverse;'
+  awayCell.innerHTML = `${flagIcon(fx.away, awayTeam.flag)}<span>${escapeText(awayTeam.name)}</span>`
 
   // Save button
   const saveBtn = document.createElement('button')
@@ -125,7 +126,7 @@ function scoreInput(value, disabled) {
   input.value = value ?? ''
   input.disabled = disabled
   input.style.cssText =
-    `width:52px;background:var(--color-navy-dark);border:1px solid var(--color-gold-dark);border-radius:4px;padding:8px;color:var(--color-gold-bright);font-family:var(--font-display);font-size:22px;text-align:center;outline:none;-moz-appearance:textfield;`
+    `width:52px;height:48px;box-sizing:border-box;background:var(--color-navy-dark);border:1px solid var(--color-gold-dark);border-radius:4px;padding:0 6px;color:var(--color-gold-bright);font-family:var(--font-display);font-size:22px;text-align:center;outline:none;-moz-appearance:textfield;`
   input.addEventListener('focus', () => { if (!disabled) input.style.borderColor = 'var(--color-gold-bright)' })
   input.addEventListener('blur',  () => { input.style.borderColor = 'var(--color-gold-dark)' })
   return input
