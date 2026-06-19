@@ -70,9 +70,9 @@ function buildMatchCard(fx, data) {
   const awayFlag = isTbd ? '' : flagIcon(fx.away, awayTeam.flag)
 
   const homeScore = played
-    ? `<span class="match-card__score" style="color:${homeColor};">${fx.homeScore}</span>` : ''
+    ? `<span class="match-card__score" style="color:${homeColor};">${Number(fx.homeScore)}</span>` : ''
   const awayScore = played
-    ? `<span class="match-card__score" style="color:${awayColor};">${fx.awayScore}</span>` : ''
+    ? `<span class="match-card__score" style="color:${awayColor};">${Number(fx.awayScore)}</span>` : ''
 
   const vsDivider = !played
     ? `<div style="text-align:center;color:var(--color-text-muted);font-size:11px;font-weight:700;letter-spacing:3px;padding:0 18px 2px;opacity:0.6;">VS</div>`

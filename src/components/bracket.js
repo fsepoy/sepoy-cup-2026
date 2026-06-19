@@ -73,7 +73,7 @@ function buildSlot(teamId, team, isTbd, score, isWinner, played) {
     <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;background:${bg};${border}${shadow}transition:all 0.2s;">
       <span>${isTbd ? '<span style="color:var(--color-text-muted)">—</span>' : flagIcon(teamId, team?.flag)}</span>
       <span style="font-weight:600;color:${color};flex:1;">${isTbd ? 'TBD' : escapeHtml(team?.name ?? '?')}</span>
-      ${played ? `<span style="font-family:var(--font-display);font-size:24px;color:${isWinner ? 'var(--color-gold-bright)' : 'var(--color-text-muted)'};">${score}</span>` : ''}
+      ${played ? `<span style="font-family:var(--font-display);font-size:24px;color:${isWinner ? 'var(--color-gold-bright)' : 'var(--color-text-muted)'};">${Number(score)}</span>` : ''}
     </div>
   `
 }

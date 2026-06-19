@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="public/assets/trophy-legacy.png" alt="The Legacy Cup" width="120" />
+<img src="public/assets/trophy-cup.png" alt="The Sepoy Cup" width="120" />
 
 # 🏆 Sepoy Cup 2026
 
