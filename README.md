@@ -52,8 +52,6 @@
 
 </div>
 
-> 💡 Screenshots are captured after each tournament milestone and committed to `docs/screenshots/`.
-
 ---
 
 ## 🏟️ Tournament
