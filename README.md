@@ -38,15 +38,15 @@
 
 ### 🌟 Light Theme
 
-| Hero | Fixtures |
+| Hero | Standings |
 |---|---|
-| ![Hero Light](docs/screenshots/hero-light.png) | ![Fixtures Light](docs/screenshots/fixtures-light.png) |
+| ![Hero Light](docs/screenshots/hero-dark.png) | ![Standings Light](docs/screenshots/standings-dark.png) |
 
 ### 🌙 Dark Theme
 
-| Hero | Standings |
+| Hero | Fixtures |
 |---|---|
-| ![Hero Dark](docs/screenshots/hero-dark.png) | ![Standings Dark](docs/screenshots/standings-dark.png) |
+| ![Hero Dark](docs/screenshots/hero-light.png) | ![Fixtures Dark](docs/screenshots/fixtures-light.png) |
 
 </div>
 
