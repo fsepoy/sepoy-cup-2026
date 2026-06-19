@@ -10,7 +10,7 @@ export function renderGroups(el, data) {
         <div class="heading" style="font-family:var(--font-mono);color:var(--color-gold-bright);">Group Standings</div>
         <div class="divider-star" style="color:var(--color-gold);justify-content:center;max-width:300px;margin:8px auto 0;">★ ★ ★</div>
       </div>
-      <div class="standings-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+      <div class="standings-grid">
         ${buildGroupCard('A', data)}
         ${buildGroupCard('B', data)}
       </div>
@@ -41,7 +41,7 @@ function buildGroupCard(group, data) {
         <span style="font-family:var(--font-display);font-size:18px;letter-spacing:2px;color:var(--color-gold-bright);text-transform:uppercase;">Group ${escapeHtml(group)}</span>
         ${!played ? `<span style="font-size:11px;color:var(--color-text-muted);margin-left:10px;">No matches played yet</span>` : ''}
       </div>
-      <table class="group-table" style="width:100%;border-collapse:collapse;font-size:15px;">
+      <div style="overflow-x:auto;"><table class="group-table" style="width:100%;border-collapse:collapse;font-size:15px;min-width:320px;">
         <thead>
           <tr>
             <th style="background:var(--color-navy);color:var(--color-gold);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:8px 10px;text-align:left;border-bottom:2px solid var(--color-gold);" colspan="2">Team</th>
@@ -53,7 +53,7 @@ function buildGroupCard(group, data) {
         <tbody>
           ${rows.map((row, i) => buildStandingRow(row, i, data.teams[row.teamId])).join('')}
         </tbody>
-      </table>
+      </table></div>
     </div>
   `
 }

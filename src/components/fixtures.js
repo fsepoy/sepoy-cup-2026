@@ -66,29 +66,40 @@ function buildMatchCard(fx, data) {
   const homeColor = resultColor(fx.homeScore, fx.awayScore, played)
   const awayColor = resultColor(fx.awayScore, fx.homeScore, played)
 
-  const borderColor = played ? 'var(--color-gold)' : isTbd ? 'transparent' : 'var(--color-navy)'
-  const scoreHtml   = played
-    ? `<span style="font-family:var(--font-display);font-size:28px;color:var(--color-gold-bright);min-width:80px;text-align:center;letter-spacing:2px;">${fx.homeScore} – ${fx.awayScore}</span>`
-    : `<span style="font-size:16px;color:var(--color-text-muted);font-weight:600;min-width:80px;text-align:center;">vs</span>`
+  const homeFlag = isTbd ? '' : flagIcon(fx.home, homeTeam.flag)
+  const awayFlag = isTbd ? '' : flagIcon(fx.away, awayTeam.flag)
+
+  const homeScore = played
+    ? `<span class="match-card__score" style="color:${homeColor};">${fx.homeScore}</span>` : ''
+  const awayScore = played
+    ? `<span class="match-card__score" style="color:${awayColor};">${fx.awayScore}</span>` : ''
+
+  const vsDivider = !played
+    ? `<div style="text-align:center;color:var(--color-text-muted);font-size:11px;font-weight:700;letter-spacing:3px;padding:0 18px 2px;opacity:0.6;">VS</div>`
+    : ''
 
   const badge = played
-    ? `<span style="background:var(--color-navy);color:var(--color-gold);border:1px solid var(--color-gold-dark);padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;">Played</span>`
+    ? `<span style="background:var(--color-navy);color:var(--color-gold);border:1px solid var(--color-gold-dark);padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;">Played</span>`
     : isTbd
       ? `<span style="color:var(--color-text-muted);font-size:10px;letter-spacing:1px;text-transform:uppercase;">TBD</span>`
       : `<span style="color:var(--color-text-muted);font-size:10px;letter-spacing:1px;text-transform:uppercase;">Upcoming</span>`
 
+  const borderColor = played ? 'var(--color-gold)' : isTbd ? 'rgba(212,165,116,0.1)' : 'rgba(212,165,116,0.3)'
+
   return `
-    <div class="match-card" style="display:flex;align-items:center;gap:12px;padding:14px 18px;background:var(--color-navy-mid);border-radius:4px;margin-bottom:12px;border-left:3px solid ${borderColor};opacity:${isTbd ? '0.5' : '1'};">
-      <div style="display:flex;align-items:center;gap:10px;flex:1;font-family:var(--font-sans);font-size:16px;font-weight:600;color:${homeColor};">
-        ${flagIcon(fx.home, homeTeam.flag)}
-        <span>${escapeHtml(homeTeam.name)}</span>
+    <div class="match-card ${played ? 'match-card--played' : ''} ${isTbd ? 'match-card--tbd' : ''}" style="border-left-color:${borderColor};">
+      <div class="match-card__row">
+        ${homeFlag}
+        <span class="match-card__name" style="color:${homeColor};">${escapeHtml(homeTeam.name)}</span>
+        ${homeScore}
       </div>
-      ${scoreHtml}
-      <div style="display:flex;align-items:center;gap:10px;flex:1;font-family:var(--font-sans);font-size:16px;font-weight:600;color:${awayColor};flex-direction:row-reverse;">
-        ${flagIcon(fx.away, awayTeam.flag)}
-        <span>${escapeHtml(awayTeam.name)}</span>
+      ${vsDivider}
+      <div class="match-card__row" style="border-top:1px solid rgba(255,255,255,0.05);">
+        ${awayFlag}
+        <span class="match-card__name" style="color:${awayColor};">${escapeHtml(awayTeam.name)}</span>
+        ${awayScore}
       </div>
-      <div style="min-width:70px;text-align:right;">${badge}</div>
+      <div class="match-card__footer">${badge}</div>
     </div>
   `
 }
