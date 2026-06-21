@@ -1,5 +1,6 @@
 import { getPat } from './pat-section.js'
 import { getFileMeta, writeData } from '../../lib/github.js'
+import { resolveBracket } from '../../lib/knockout.js'
 import { showToast } from './toast.js'
 import { flagIcon } from '../../lib/utils.js'
 
@@ -22,11 +23,13 @@ export function renderScoresSection(el, data) {
   title.textContent = 'Match Scores'
   el.appendChild(title)
 
-  // Group fixtures by stage/group
+  const rerender = (updatedData) => renderScoresSection(el, updatedData)
+  const bracket    = resolveBracket(data)
+  const resolvedKO = { SF1: bracket.sf1, SF2: bracket.sf2, '3PL': bracket.third, FIN: bracket.final }
   const groups = groupFixtures(data.fixtures)
 
   for (const { label, fixtures } of groups) {
-    const section = buildFixtureGroup(label, fixtures, data)
+    const section = buildFixtureGroup(label, fixtures, data, rerender, resolvedKO)
     el.appendChild(section)
   }
 }
@@ -49,7 +52,7 @@ function groupFixtures(fixtures) {
   return result
 }
 
-function buildFixtureGroup(label, fixtures, data) {
+function buildFixtureGroup(label, fixtures, data, rerender, resolvedKO) {
   const wrap = document.createElement('div')
   wrap.style.cssText = 'margin-bottom:16px;background:var(--color-navy-mid);border-radius:8px;padding:12px 20px;'
 
@@ -60,7 +63,7 @@ function buildFixtureGroup(label, fixtures, data) {
   wrap.appendChild(heading)
 
   for (const fx of fixtures) {
-    wrap.appendChild(buildFixtureRow(fx, data))
+    wrap.appendChild(buildFixtureRow(fx, data, rerender, resolvedKO))
   }
   return wrap
 }
@@ -73,13 +76,16 @@ function resultColor(myScore, oppScore) {
   return 'var(--color-text-light)'
 }
 
-function buildFixtureRow(fx, data) {
-  const isTbd = fx.home === 'TBD' || fx.away === 'TBD'
-  const homeTeam = data.teams[fx.home] ?? { name: 'TBD', flag: '—', short: 'TBD' }
-  const awayTeam = data.teams[fx.away] ?? { name: 'TBD', flag: '—', short: 'TBD' }
+function buildFixtureRow(fx, data, rerender, resolvedKO) {
+  const resolved = resolvedKO?.[fx.id]
+  const homeId   = resolved?.home ?? fx.home
+  const awayId   = resolved?.away ?? fx.away
+  const isTbd    = homeId === 'TBD' || awayId === 'TBD'
+  const homeTeam = data.teams[homeId] ?? { name: 'TBD', flag: '—', short: 'TBD' }
+  const awayTeam = data.teams[awayId] ?? { name: 'TBD', flag: '—', short: 'TBD' }
 
-  const homeColor = resultColor(fx.homeScore, fx.awayScore)
-  const awayColor = resultColor(fx.awayScore, fx.homeScore)
+  const homeColor = resultColor(resolved?.homeScore ?? fx.homeScore, resolved?.awayScore ?? fx.awayScore)
+  const awayColor = resultColor(resolved?.awayScore ?? fx.awayScore, resolved?.homeScore ?? fx.homeScore)
 
   const row = document.createElement('div')
   row.style.cssText =
@@ -88,19 +94,21 @@ function buildFixtureRow(fx, data) {
   // Home team
   const homeCell = document.createElement('div')
   homeCell.style.cssText = `display:flex;align-items:center;gap:10px;font-family:var(--font-sans);font-size:16px;font-weight:600;color:${homeColor};`
-  homeCell.innerHTML = `${flagIcon(fx.home, homeTeam.flag)}<span>${escapeText(homeTeam.name)}</span>`
+  homeCell.innerHTML = `${flagIcon(homeId, homeTeam.flag)}<span>${escapeText(homeTeam.name)}</span>`
 
-  // Score inputs
-  const homeScore = scoreInput(fx.homeScore, isTbd)
+  // Score inputs — use resolved scores if available
+  const dispHomeScore = resolved?.homeScore ?? fx.homeScore
+  const dispAwayScore = resolved?.awayScore ?? fx.awayScore
+  const homeScore = scoreInput(dispHomeScore, isTbd)
   const separator = document.createElement('span')
   separator.style.cssText = 'color:var(--color-text-muted);font-size:18px;'
   separator.textContent = '—'
-  const awayScore = scoreInput(fx.awayScore, isTbd)
+  const awayScore = scoreInput(dispAwayScore, isTbd)
 
   // Away team
   const awayCell = document.createElement('div')
   awayCell.style.cssText = `display:flex;align-items:center;gap:10px;font-family:var(--font-sans);font-size:16px;font-weight:600;color:${awayColor};flex-direction:row-reverse;`
-  awayCell.innerHTML = `${flagIcon(fx.away, awayTeam.flag)}<span>${escapeText(awayTeam.name)}</span>`
+  awayCell.innerHTML = `${flagIcon(awayId, awayTeam.flag)}<span>${escapeText(awayTeam.name)}</span>`
 
   // Save button
   const saveBtn = document.createElement('button')
@@ -113,7 +121,7 @@ function buildFixtureRow(fx, data) {
     const hs = homeScore.value === '' ? null : Number(homeScore.value)
     const as = awayScore.value === '' ? null : Number(awayScore.value)
     if (hs === null || as === null) { showToast('Enter both scores before saving', 'error'); return }
-    await saveFixtureScore(fx.id, hs, as, saveBtn)
+    await saveFixtureScore(fx.id, hs, as, saveBtn, rerender)
   })
 
   row.appendChild(homeCell)
@@ -143,7 +151,7 @@ function scoreInput(value, disabled) {
   return input
 }
 
-async function saveFixtureScore(fixtureId, homeScore, awayScore, btn) {
+async function saveFixtureScore(fixtureId, homeScore, awayScore, btn, rerender) {
   const pat = getPat()
   if (!pat) { showToast('Enter and save your GitHub PAT first', 'error'); return }
 
@@ -154,11 +162,20 @@ async function saveFixtureScore(fixtureId, homeScore, awayScore, btn) {
   const { ok, sha, content, error: fetchErr } = await getFileMeta(pat)
   if (!ok) { showToast(`Read failed: ${fetchErr}`, 'error'); btn.textContent = originalText; btn.disabled = false; return }
 
+  // For knockout fixtures still holding 'TBD', resolve real team IDs from the
+  // bracket before writing so data.json stays self-consistent.
+  const liveKO = resolveBracket(content)
+  const liveKOMap = { SF1: liveKO.sf1, SF2: liveKO.sf2, '3PL': liveKO.third, FIN: liveKO.final }
+
   const updated = {
     ...content,
-    fixtures: content.fixtures.map(fx =>
-      fx.id === fixtureId ? { ...fx, homeScore, awayScore } : fx
-    ),
+    fixtures: content.fixtures.map(fx => {
+      if (fx.id !== fixtureId) return fx
+      const r    = liveKOMap[fixtureId]
+      const home = (fx.home === 'TBD' && r?.home && r.home !== 'TBD') ? r.home : fx.home
+      const away = (fx.away === 'TBD' && r?.away && r.away !== 'TBD') ? r.away : fx.away
+      return { ...fx, home, away, homeScore, awayScore }
+    }),
   }
 
   const { ok: writeOk, error: writeErr } = await writeData(pat, updated, sha)
@@ -166,8 +183,16 @@ async function saveFixtureScore(fixtureId, homeScore, awayScore, btn) {
 
   btn.textContent = '✓'
   btn.style.background = 'var(--color-success)'
-  showToast(`Score saved for fixture ${fixtureId}`, 'success')
-  setTimeout(() => { btn.textContent = originalText; btn.style.background = 'var(--color-gold-bright)'; btn.disabled = false }, 2000)
+  showToast('Score saved', 'success')
+  setTimeout(() => {
+    if (rerender) {
+      rerender(updated)
+    } else {
+      btn.textContent = originalText
+      btn.style.background = 'var(--color-gold-bright)'
+      btn.disabled = false
+    }
+  }, 2000)
 }
 
 function escapeText(str) {

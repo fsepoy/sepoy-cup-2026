@@ -272,4 +272,8 @@ Made with ⚽ + ❤️ for the family · Sepoy Cup 2026 · Edition I
 
 *May the best team win* 🏆
 
+---
+
+<img src="docs/screenshots/claude-icon-small.png" alt="Claude Code" height="16" style="vertical-align:middle;opacity:0.6;" /> <span style="color:#9ca3af;font-size:13px;">Vibe coded with Claude Code</span>
+
 </div>

@@ -30,16 +30,24 @@ export function renderGroups(el, data) {
   el.querySelectorAll('.card').forEach(card => observer.observe(card))
 }
 
+function isGroupComplete(fixtures, group) {
+  return fixtures
+    .filter(fx => fx.stage === 'group' && fx.group === group)
+    .every(fx => fx.homeScore !== null && fx.awayScore !== null)
+}
+
 function buildGroupCard(group, data) {
-  const teamIds = data.groups[group]
-  const rows    = calculateStandings(teamIds, data.fixtures, group)
-  const played  = data.fixtures.some(fx => fx.stage === 'group' && fx.group === group && fx.homeScore !== null)
+  const teamIds      = data.groups[group]
+  const rows         = calculateStandings(teamIds, data.fixtures, group)
+  const played       = data.fixtures.some(fx => fx.stage === 'group' && fx.group === group && fx.homeScore !== null)
+  const groupComplete = isGroupComplete(data.fixtures, group)
 
   return `
     <div class="card" style="background:var(--color-navy-mid);border:2px solid var(--color-gold);border-radius:8px;overflow:hidden;">
       <div class="card__header" style="background:var(--color-navy);padding:12px 16px;border-bottom:2px solid var(--color-gold);">
         <span style="font-family:var(--font-display);font-size:18px;letter-spacing:2px;color:var(--color-gold-bright);text-transform:uppercase;">Group ${escapeHtml(group)}</span>
         ${!played ? `<span style="font-size:11px;color:var(--color-text-muted);margin-left:10px;">No matches played yet</span>` : ''}
+        ${groupComplete ? `<span style="font-size:11px;font-weight:700;letter-spacing:1px;color:var(--color-win);margin-left:10px;text-transform:uppercase;">Group Complete</span>` : ''}
       </div>
       <div style="overflow-x:auto;"><table class="group-table" style="width:100%;border-collapse:collapse;font-size:15px;min-width:320px;">
         <thead>
@@ -51,14 +59,14 @@ function buildGroupCard(group, data) {
           </tr>
         </thead>
         <tbody>
-          ${rows.map((row, i) => buildStandingRow(row, i, data.teams[row.teamId])).join('')}
+          ${rows.map((row, i) => buildStandingRow(row, i, data.teams[row.teamId], groupComplete)).join('')}
         </tbody>
       </table></div>
     </div>
   `
 }
 
-function buildStandingRow(row, index, team) {
+function buildStandingRow(row, index, team, groupComplete) {
   const hasWon  = row.W > 0
   const hasLost = row.L > 0 && row.W === 0
   const hasDraw = row.D > 0 && row.W === 0 && row.L === 0
@@ -77,6 +85,10 @@ function buildStandingRow(row, index, team) {
   // Row background tint for losers
   const rowBg = hasLost ? 'rgba(180,30,30,0.15)' : 'transparent'
 
+  const qualifiedBadge = (index < 2 && groupComplete)
+    ? `<span style="font-size:10px;font-weight:700;letter-spacing:1px;color:var(--color-win);margin-left:6px;vertical-align:middle;">Q</span>`
+    : ''
+
   const advBadge = index < 2
     ? `<span style="display:inline-block;width:4px;height:14px;background:${hasWon ? 'var(--color-win)' : 'var(--color-gold-bright)'};border-radius:2px;margin-right:6px;vertical-align:middle;"></span>`
     : `<span style="display:inline-block;width:4px;height:14px;margin-right:6px;"></span>`
@@ -94,7 +106,7 @@ function buildStandingRow(row, index, team) {
       <td style="padding:10px 10px;border-bottom:1px solid rgba(212,165,116,0.08);">
         ${advBadge}
         <span style="margin-right:8px;">${flagIcon(row.teamId, team?.flag)}</span>
-        <span style="font-family:var(--font-sans);font-size:15px;font-weight:${hasWon ? '700' : '600'};color:${nameColor};">${escapeHtml(team?.name ?? row.teamId)}</span>
+        <span style="font-family:var(--font-sans);font-size:15px;font-weight:${hasWon ? '700' : '600'};color:${nameColor};">${escapeHtml(team?.name ?? row.teamId)}</span>${qualifiedBadge}
       </td>
       ${cells}
     </tr>

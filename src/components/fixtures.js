@@ -1,4 +1,5 @@
 import { gsap } from 'gsap'
+import { resolveBracket } from '../lib/knockout.js'
 import { escapeHtml, flagIcon } from '../lib/utils.js'
 
 const STAGE_SECTIONS = [
@@ -12,6 +13,9 @@ const STAGE_SECTIONS = [
 export function renderFixtures(el, data) {
   el.className = 'section'
   el.style.background = 'var(--color-cream)'
+
+  const bracket   = resolveBracket(data)
+  const resolvedKO = { SF1: bracket.sf1, SF2: bracket.sf2, '3PL': bracket.third, FIN: bracket.final }
 
   let html = `
     <div class="container">
@@ -29,7 +33,11 @@ export function renderFixtures(el, data) {
 
     html += `<div class="fixtures-group" style="margin-bottom:32px;">`
     html += `<div style="font-family:var(--font-display);font-size:18px;letter-spacing:1.5px;color:var(--color-gold-dark);text-transform:uppercase;padding-bottom:8px;border-bottom:1px solid rgba(26,46,90,0.2);margin-bottom:12px;">${section.label}</div>`
-    for (const fx of fxs) html += buildMatchCard(fx, data)
+    for (const fx of fxs) {
+      const r = resolvedKO[fx.id]
+      const displayFx = r ? { ...fx, home: r.home, away: r.away, homeScore: r.homeScore, awayScore: r.awayScore } : fx
+      html += buildMatchCard(displayFx, data)
+    }
     html += `</div>`
   }
 

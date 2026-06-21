@@ -62,36 +62,41 @@ export function getLoser(fixture) {
 export function resolveBracket(data) {
   const { fixtures } = data
 
-  const sf1 = fixtures.find(fx => fx.id === 'SF1')
-  const sf2 = fixtures.find(fx => fx.id === 'SF2')
-  const tpl = fixtures.find(fx => fx.id === '3PL')
-  const fin = fixtures.find(fx => fx.id === 'FIN')
+  const sf1raw = fixtures.find(fx => fx.id === 'SF1')
+  const sf2raw = fixtures.find(fx => fx.id === 'SF2')
+  const tpl    = fixtures.find(fx => fx.id === '3PL')
+  const fin    = fixtures.find(fx => fx.id === 'FIN')
 
   const groupDone = isGroupStageComplete(fixtures)
   const seedings  = groupDone ? seedKnockout(data) : null
 
+  // Build resolved SF objects using seeded team IDs so getWinner/getLoser
+  // can return actual teams (not 'TBD') when computing 3PL/FIN.
+  const sf1 = sf1raw && {
+    home:      seedings?.sf1.home ?? sf1raw.home,
+    away:      seedings?.sf1.away ?? sf1raw.away,
+    homeScore: sf1raw.homeScore,
+    awayScore: sf1raw.awayScore,
+  }
+  const sf2 = sf2raw && {
+    home:      seedings?.sf2.home ?? sf2raw.home,
+    away:      seedings?.sf2.away ?? sf2raw.away,
+    homeScore: sf2raw.homeScore,
+    awayScore: sf2raw.awayScore,
+  }
+
   return {
-    sf1: {
-      home:  seedings?.sf1.home ?? 'TBD',
-      away:  seedings?.sf1.away ?? 'TBD',
-      homeScore: sf1?.homeScore ?? null,
-      awayScore: sf1?.awayScore ?? null,
-    },
-    sf2: {
-      home:  seedings?.sf2.home ?? 'TBD',
-      away:  seedings?.sf2.away ?? 'TBD',
-      homeScore: sf2?.homeScore ?? null,
-      awayScore: sf2?.awayScore ?? null,
-    },
+    sf1:   sf1 ?? { home: 'TBD', away: 'TBD', homeScore: null, awayScore: null },
+    sf2:   sf2 ?? { home: 'TBD', away: 'TBD', homeScore: null, awayScore: null },
     third: {
-      home:  sf1 ? (getLoser(sf1) ?? 'TBD') : 'TBD',
-      away:  sf2 ? (getLoser(sf2) ?? 'TBD') : 'TBD',
+      home:      sf1 ? (getLoser(sf1)  ?? 'TBD') : 'TBD',
+      away:      sf2 ? (getLoser(sf2)  ?? 'TBD') : 'TBD',
       homeScore: tpl?.homeScore ?? null,
       awayScore: tpl?.awayScore ?? null,
     },
     final: {
-      home:  sf1 ? (getWinner(sf1) ?? 'TBD') : 'TBD',
-      away:  sf2 ? (getWinner(sf2) ?? 'TBD') : 'TBD',
+      home:      sf1 ? (getWinner(sf1) ?? 'TBD') : 'TBD',
+      away:      sf2 ? (getWinner(sf2) ?? 'TBD') : 'TBD',
       homeScore: fin?.homeScore ?? null,
       awayScore: fin?.awayScore ?? null,
     },

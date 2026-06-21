@@ -113,4 +113,35 @@ describe('resolveBracket', () => {
     expect(bracket.sf1.home).toBe('croatia')
     expect(bracket.sf2.home).toBe('england')
   })
+
+  it('resolves 3PL and Final teams once SF scores are present', () => {
+    // seeds: SF1 = croatia (1A) vs argentina (2B), SF2 = england (1B) vs germany (2A)
+    // SF1: croatia wins 2-1 → croatia to FIN, argentina to 3PL
+    // SF2: germany wins 0-1 → germany to FIN, england to 3PL
+    const data = {
+      groups: { A: ['croatia', 'belgium', 'germany'], B: ['england', 'france', 'argentina'] },
+      teams:  { croatia: {}, belgium: {}, germany: {}, england: {}, france: {}, argentina: {} },
+      fixtures: [
+        { id: 'GA1', stage: 'group', group: 'A', home: 'croatia',   away: 'belgium',   homeScore: 2, awayScore: 0 },
+        { id: 'GA2', stage: 'group', group: 'A', home: 'croatia',   away: 'germany',   homeScore: 1, awayScore: 1 },
+        { id: 'GA3', stage: 'group', group: 'A', home: 'belgium',   away: 'germany',   homeScore: 0, awayScore: 2 },
+        { id: 'GB1', stage: 'group', group: 'B', home: 'england',   away: 'france',    homeScore: 3, awayScore: 1 },
+        { id: 'GB2', stage: 'group', group: 'B', home: 'england',   away: 'argentina', homeScore: 2, awayScore: 0 },
+        { id: 'GB3', stage: 'group', group: 'B', home: 'france',    away: 'argentina', homeScore: 1, awayScore: 2 },
+        { id: 'SF1', stage: 'semi',  home: 'TBD', away: 'TBD', homeScore: 2, awayScore: 1 },
+        { id: 'SF2', stage: 'semi',  home: 'TBD', away: 'TBD', homeScore: 0, awayScore: 1 },
+        { id: '3PL', stage: 'third', home: 'TBD', away: 'TBD', homeScore: null, awayScore: null },
+        { id: 'FIN', stage: 'final', home: 'TBD', away: 'TBD', homeScore: null, awayScore: null },
+      ],
+    }
+    const bracket = resolveBracket(data)
+    expect(bracket.sf1.home).toBe('croatia')
+    expect(bracket.sf1.away).toBe('argentina')
+    expect(bracket.sf2.home).toBe('england')
+    expect(bracket.sf2.away).toBe('germany')
+    expect(bracket.third.home).toBe('argentina') // loser of SF1
+    expect(bracket.third.away).toBe('england')   // loser of SF2
+    expect(bracket.final.home).toBe('croatia')   // winner of SF1
+    expect(bracket.final.away).toBe('germany')   // winner of SF2
+  })
 })
